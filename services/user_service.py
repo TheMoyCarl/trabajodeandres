@@ -28,6 +28,13 @@ class UsersService:
         return self.users_repository.get_user_by_id(user_id)
 
     def create_user(self, username: str, password: str):
+        """
+        Crea un nuevo usuario si el nombre de usuario no existe.
+        """
+        existing_user = self.users_repository.db.query(User).filter(User.username == username).first()
+        if existing_user:
+            logger.warning(f"El nombre de usuario ya existe: {username}")
+            raise ValueError("El nombre de usuario ya está en uso.")
         password_hashed = generate_password_hash(password)
         logger.info(f"Creating user: {username}")
         return self.users_repository.create_user(username, password_hashed)

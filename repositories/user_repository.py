@@ -40,18 +40,19 @@ class UserRepository:
     def create_user(self, username: str, password: str):
         """
         Crea y almacena un nuevo usuario en la base de datos.
-        Recibe el nombre de usuario y la contraseña como parámetros, instancia un nuevo objeto User
-        y lo agrega a la sesión de la base de datos. Tras confirmar la transacción,
-        retorna el nuevo usuario creado, incluyendo su ID asignado automáticamente.
-        Es útil para registrar nuevos usuarios en el sistema.
+        Maneja errores de integridad y realiza un rollback en caso de excepciones.
         """
-        #INSERT INTO users (username, password) VALUES (username, password);
         logger.info(f"Creando usuario: {username}")
         new_user = User(username=username, password=password)
-        self.db.add(new_user)
-        self.db.commit()
-        self.db.refresh(new_user)
-        return new_user
+        try:
+            self.db.add(new_user)
+            self.db.commit()
+            self.db.refresh(new_user)
+            return new_user
+        except Exception as e:
+            logger.error(f"Error al crear usuario: {e}")
+            self.db.rollback()
+            raise
     
     def update_user(self, user_id: int, username: str = None, password: str = None):
         """

@@ -1,0 +1,8 @@
+# Ignorar caches y ficheros compilados
+__pycache__/
+*.pyc
+# Ignorar bases de datos locales
+*.db
+libreria_local.db
+# Entornos virtuales (si aplica)
+.venv/

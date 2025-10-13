@@ -1,7 +1,7 @@
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-from services.user_service import UsersService
+from services.users_services import UsersService
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 # Handler personalizado para errores de autenticación JWT

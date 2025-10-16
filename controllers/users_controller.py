@@ -42,7 +42,7 @@ def login():
         return jsonify({'error': 'El nombre de usuario y la contrasena son obligatorios'}), 400, {'Content-Type': 'application/json; charset=utf-8'}
     user = service.authenticate_user(username, password)
     if user:
-        access_token = create_access_token(identity={'id': user.id, 'username': user.username})
+        access_token = create_access_token(identity={'id': user.id, 'username': user.username, 'role': user.role})
         logger.info(f"Usuario autenticado: {username}")
         return jsonify({'access_token': access_token}), 200, {'Content-Type': 'application/json; charset=utf-8'}
     logger.warning(f"Login fallido para usuario: {username}")
@@ -92,12 +92,13 @@ def create_user():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+    role = data.get('role', 'user')
     if not username or not password:
         logger.warning("Registro fallido: usuario o contraseña no proporcionados")
         return jsonify({'error': 'El nombre de usuario y la contraseña son obligatorios'}), 400, {'Content-Type': 'application/json; charset=utf-8'}
-    user = service.create_user(username, password)
-    logger.info(f"Usuario creado: {username}")
-    return jsonify({'id': user.id, 'username': user.username}), 201, {'Content-Type': 'application/json; charset=utf-8'}
+    user = service.create_user(username, password, role)
+    logger.info(f"Usuario creado: {username} con rol: {role}")
+    return jsonify({'id': user.id, 'username': user.username, 'role': user.role}), 201, {'Content-Type': 'application/json; charset=utf-8'}
 
 @user_bp.route('/users/<int:user_id>', methods=['PUT'])
 @jwt_required()

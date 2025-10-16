@@ -15,3 +15,8 @@ repositories/: Creacion de funciones que se van a usar para aplicar los comandos
 controllers/:Rutas y Aplicacin de las funciones.
 database.py/:Creacion de la base de datos local que se usa en caso de tener errores de conexion
 services/: Logica de que datos se van a ver modificados cuando se usen los comandos
+
+Autenticacion:
+En el registro, se valida que el correo no exista y se guarda el usuario con la contraseña cifrada.
+
+En el login, se verifica la contraseña y se genera un token firmado con una clave secreta (JWT_SECRET).

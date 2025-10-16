@@ -18,3 +18,5 @@ class User(Base):
     # Define la columna 'password' como una cadena de hasta 255 caracteres
     # No permite valores nulos. La longitud sugiere que se almacenará un hash de la contraseña, no la contraseña en texto plano
     password = Column(String(255), nullable=False)
+    # Nuevo campo 'role' para autorización por roles
+    role = Column(String(20), default="user", nullable=False)

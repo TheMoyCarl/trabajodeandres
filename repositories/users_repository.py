@@ -1,7 +1,7 @@
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-from models.user_model import User
+from models.users_model import User
 from sqlalchemy.orm import Session
 
 class UserRepository:
@@ -37,13 +37,13 @@ class UserRepository:
         logger.info(f"Buscando usuario por ID: {user_id}")
         return self.db.query(User).filter(User.id == user_id).first()
 
-    def create_user(self, username: str, password: str):
+    def create_user(self, username: str, password: str, role: str = "user"):
         """
         Crea y almacena un nuevo usuario en la base de datos.
         Maneja errores de integridad y realiza un rollback en caso de excepciones.
         """
-        logger.info(f"Creando usuario: {username}")
-        new_user = User(username=username, password=password)
+        logger.info(f"Creando usuario: {username} con rol: {role}")
+        new_user = User(username=username, password=password, role=role)
         try:
             self.db.add(new_user)
             self.db.commit()

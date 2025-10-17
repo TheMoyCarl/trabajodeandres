@@ -1,7 +1,7 @@
 from flask import Flask
 from config.jwt import *
 from controllers.libreria_controller import book_bp
-from controllers.user_controller import user_bp, register_jwt_error_handlers
+from controllers.users_controller import user_bp, register_jwt_error_handlers
 from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)

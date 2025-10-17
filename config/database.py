@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 from models.libreria_model import Base
-from models.user_model import Base 
+from models.users_model import Base 
 from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO)
 

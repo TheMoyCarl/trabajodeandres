@@ -1,5 +1,5 @@
-from repositories.user_repository import UserRepository
-from models.user_model import User
+from repositories.users_repository import UserRepository
+from models.users_model import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import logging
 
@@ -27,7 +27,7 @@ class UsersService:
         logger.info(f"Fetching user by ID: {user_id}")
         return self.users_repository.get_user_by_id(user_id)
 
-    def create_user(self, username: str, password: str):
+    def create_user(self, username: str, password: str, role: str = "user"):
         """
         Crea un nuevo usuario si el nombre de usuario no existe.
         """
@@ -36,8 +36,8 @@ class UsersService:
             logger.warning(f"El nombre de usuario ya existe: {username}")
             raise ValueError("El nombre de usuario ya está en uso.")
         password_hashed = generate_password_hash(password)
-        logger.info(f"Creating user: {username}")
-        return self.users_repository.create_user(username, password_hashed)
+        logger.info(f"Creating user: {username} con rol: {role}")
+        return self.users_repository.create_user(username, password_hashed, role)
     
 
     def update_user(self, user_id: int, username: str = None, password: str = None):

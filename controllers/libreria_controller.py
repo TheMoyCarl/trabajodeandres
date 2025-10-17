@@ -7,7 +7,6 @@ book_bp = Blueprint('book_bp', __name__)
 service = BookService(get_db_session())
 
 @book_bp.route('/books', methods=['GET'])
-@role_required('admin')
 def get_books():
     books = service.listar_libros()
     return jsonify([{'id': b.id, 'title': b.title, 'author': b.author, 'year': b.year} for b in books]), 200

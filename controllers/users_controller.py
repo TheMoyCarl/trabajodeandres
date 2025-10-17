@@ -3,10 +3,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 from services.users_services import UsersService
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity
 # Handler personalizado para errores de autenticación JWT
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from flask import current_app
+from functools import wraps
 
 from config.database import get_db_session
 
@@ -139,3 +140,22 @@ def delete_user(user_id):
         return jsonify({'message': 'Usuario eliminado correctamente'}), 200, {'Content-Type': 'application/json; charset=utf-8'}
     logger.warning(f"Usuario no encontrado para eliminar: {user_id}")
     return jsonify({'error': 'Usuario no encontrado'}), 404, {'Content-Type': 'application/json; charset=utf-8'}
+
+# Decorador para autorización por rol
+def role_required(required_role):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            identity = get_jwt_identity()
+            if identity.get('role') != required_role:
+                return jsonify({'error': 'No autorizado: se requiere rol %s' % required_role}), 403
+            return fn(*args, **kwargs)
+        return wrapper
+    return decorator
+
+# Ruta de ejemplo protegida solo para administradores
+@user_bp.route('/admin-only', methods=['GET'])
+@jwt_required()
+@role_required('admin')
+def admin_only():
+    return jsonify({'message': 'Acceso permitido solo para administradores'})

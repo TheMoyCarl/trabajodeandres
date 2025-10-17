@@ -15,3 +15,12 @@ repositories/: Creacion de funciones que se van a usar para aplicar los comandos
 controllers/:Rutas y Aplicacin de las funciones.
 database.py/:Creacion de la base de datos local que se usa en caso de tener errores de conexion
 services/: Logica de que datos se van a ver modificados cuando se usen los comandos
+
+Autenticacion:
+En el registro, se valida que el correo no exista y se guarda el usuario con la contraseña cifrada.
+
+En el login, se verifica la contraseña y se genera un token firmado con una clave secreta (JWT_SECRET).
+
+
+ ROLES:
+ La gestión de roles se implementó utilizando un sistema de autenticación basado en JWT. Al momento de iniciar sesión, el usuario recibe un token que incluye información sobre su rol (por ejemplo, administrador o usuario estándar). Este rol se almacena en la base de datos y se verifica en cada petición protegida, permitiendo o restringiendo el acceso a ciertas rutas o funcionalidades según el tipo de usuario.

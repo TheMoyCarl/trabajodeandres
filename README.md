@@ -20,3 +20,7 @@ Autenticacion:
 En el registro, se valida que el correo no exista y se guarda el usuario con la contraseña cifrada.
 
 En el login, se verifica la contraseña y se genera un token firmado con una clave secreta (JWT_SECRET).
+
+
+ ROLES:
+ La gestión de roles se implementó utilizando un sistema de autenticación basado en JWT. Al momento de iniciar sesión, el usuario recibe un token que incluye información sobre su rol (por ejemplo, administrador o usuario estándar). Este rol se almacena en la base de datos y se verifica en cada petición protegida, permitiendo o restringiendo el acceso a ciertas rutas o funcionalidades según el tipo de usuario.

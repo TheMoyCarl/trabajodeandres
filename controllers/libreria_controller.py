@@ -1,11 +1,13 @@
 from flask import Blueprint, request, jsonify
 from services.libreria_service import BookService
 from config.database import get_db_session
+from controllers.users_controller import role_required
 
 book_bp = Blueprint('book_bp', __name__)
 service = BookService(get_db_session())
 
 @book_bp.route('/books', methods=['GET'])
+@role_required('admin')
 def get_books():
     books = service.listar_libros()
     return jsonify([{'id': b.id, 'title': b.title, 'author': b.author, 'year': b.year} for b in books]), 200
@@ -18,6 +20,7 @@ def get_book(book_id):
     return jsonify({'error': 'Libro no encontrado'}), 404
 
 @book_bp.route('/books', methods=['POST'])
+@role_required('admin')
 def create_book():
     data = request.get_json()
     title = data.get('title')
@@ -29,6 +32,7 @@ def create_book():
     return jsonify({'id': book.id, 'title': book.title, 'author': book.author, 'year': book.year}), 201
 
 @book_bp.route('/books/<int:book_id>', methods=['PUT'])
+@role_required('admin')
 def update_book(book_id):
     data = request.get_json()
     title = data.get('title')
@@ -40,6 +44,7 @@ def update_book(book_id):
     return jsonify({'error': 'Libro no encontrado'}), 404
 
 @book_bp.route('/books/<int:book_id>', methods=['DELETE'])
+@role_required('admin')
 def delete_book(book_id):
     book = service.eliminar_libro(book_id)
     if book:

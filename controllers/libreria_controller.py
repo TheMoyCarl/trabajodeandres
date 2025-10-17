@@ -3,12 +3,10 @@ from services.libreria_service import BookService
 from config.database import get_db_session
 from flask_jwt_extended import jwt_required
 from controllers.users_controller import role_required
-from controllers.users_controller import role_required
 
 book_bp = Blueprint('book_bp', __name__)
 service = BookService(get_db_session())
 
-@book_bp.route('/books', methods=['GET'])
 @book_bp.route('/books', methods=['GET'])
 @jwt_required()
 @role_required('admin')
@@ -24,8 +22,6 @@ def get_book(book_id):
     return jsonify({'error': 'Libro no encontrado'}), 404
 
 @book_bp.route('/books', methods=['POST'])
-@role_required('admin')
-@book_bp.route('/books', methods=['POST'])
 @jwt_required()
 @role_required('admin')
 def create_book():
@@ -39,8 +35,6 @@ def create_book():
     return jsonify({'id': book.id, 'title': book.title, 'author': book.author, 'year': book.year}), 201
 
 @book_bp.route('/books/<int:book_id>', methods=['PUT'])
-@role_required('admin')
-@book_bp.route('/books/<int:book_id>', methods=['PUT'])
 @jwt_required()
 @role_required('admin')
 def update_book(book_id):
@@ -53,8 +47,6 @@ def update_book(book_id):
         return jsonify({'id': book.id, 'title': book.title, 'author': book.author, 'year': book.year}), 200
     return jsonify({'error': 'Libro no encontrado'}), 404
 
-@book_bp.route('/books/<int:book_id>', methods=['DELETE'])
-@role_required('admin')
 @book_bp.route('/books/<int:book_id>', methods=['DELETE'])
 @jwt_required()
 @role_required('admin')

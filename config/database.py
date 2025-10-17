@@ -3,8 +3,8 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
-from models.libreria_model import Base
-from models.users_model import Base 
+from models.libreria_model import Base as LibreriaBase
+from models.users_model import Base as UsersBase
 from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO)
 
@@ -35,7 +35,8 @@ def get_engine():
 
 engine = get_engine()
 Session = sessionmaker(bind=engine)
-Base.metadata.create_all(engine)
+LibreriaBase.metadata.create_all(engine)
+UsersBase.metadata.create_all(engine)
 
 def get_db_session():
     """

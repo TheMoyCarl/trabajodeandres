@@ -64,7 +64,9 @@ def get_users():
     """
     users = service.get_all_users()
     logger.info("Consulta de todos los usuarios")
-    return jsonify([{'id': u.id, 'username': u.username} for u in users]), 200, {'Content-Type': 'application/json; charset=utf-8'}
+    return jsonify([
+        {'id': u.id, 'username': u.username, 'role': u.role} for u in users
+    ]), 200, {'Content-Type': 'application/json; charset=utf-8'}
 
 @user_bp.route('/users/<int:user_id>', methods=['GET'])
 @jwt_required()

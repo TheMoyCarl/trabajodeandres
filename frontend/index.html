@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Librería — Frontend</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="auth-screen" class="container">
+    <div class="auth-card">
+      <h1 class="brand">Mi Librería</h1>
+      <div class="auth-tabs">
+        <button id="tab-login" class="btn btn-primary">Iniciar sesión</button>
+        <button id="tab-register" class="btn btn-outline">Registrar</button>
+      </div>
+      <div id="auth-body"></div>
+    </div>
+  </div>
+  <div id="main-screen" style="display:none">
+    <header class="site-header">
+      <div class="container">
+        <h1 class="brand">Mi Librería</h1>
+        <nav>
+          <button id="btn-logout" class="btn btn-outline">Cerrar sesión</button>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <section class="controls">
+        <div class="search">
+          <input id="input-book-id" type="number" placeholder="Buscar libro por ID (público)" />
+          <button id="btn-search" class="btn">Buscar</button>
+        </div>
+        <div class="actions">
+          <button id="btn-list" class="btn">Listar libros (admin)</button>
+          <button id="btn-new" class="btn btn-primary">Agregar libro (admin)</button>
+        </div>
+      </section>
+      <section id="message" class="message" hidden></section>
+      <section id="content" class="grid"></section>
+    </main>
+  </div>
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <button id="modal-close" class="modal-close" aria-label="Cerrar">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

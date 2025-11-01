@@ -102,9 +102,13 @@ def create_user():
     if not username or not password:
         logger.warning("Registro fallido: usuario o contraseña no proporcionados")
         return jsonify({'error': 'El nombre de usuario y la contraseña son obligatorios'}), 400, {'Content-Type': 'application/json; charset=utf-8'}
-    user = service.create_user(username, password, role)
-    logger.info(f"Usuario creado: {username} con rol: {role}")
-    return jsonify({'id': user.id, 'username': user.username, 'role': user.role}), 201, {'Content-Type': 'application/json; charset=utf-8'}
+    try:
+        user = service.create_user(username, password, role)
+        logger.info(f"Usuario creado: {username} con rol: {role}")
+        return jsonify({'id': user.id, 'username': user.username, 'role': user.role}), 201, {'Content-Type': 'application/json; charset=utf-8'}
+    except ValueError as e:
+        logger.warning(f"Registro fallido: {str(e)}")
+        return jsonify({'error': str(e)}), 409, {'Content-Type': 'application/json; charset=utf-8'}
 
 @user_bp.route('/users/<int:user_id>', methods=['PUT'])
 @jwt_required()

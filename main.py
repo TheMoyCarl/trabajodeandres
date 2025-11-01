@@ -1,10 +1,15 @@
+
 from flask import Flask
 from config.jwt import *
 from controllers.libreria_controller import book_bp
 from controllers.users_controller import user_bp, register_jwt_error_handlers
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+ # Habilitar CORS para permitir peticiones desde el frontend
+CORS(app)
 
 # Configurar JWT
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY

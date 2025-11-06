@@ -147,7 +147,8 @@ function renderAuthTabs(tab) {
   const body = document.getElementById('auth-body');
   if (!body) return;
   if (tab === 'login') {
-    body.innerHTML = `<h2>Iniciar sesión</h2><div class="form-row"><label>Usuario</label><input id="f-username"/></div><div class="form-row"><label>Contraseña</label><input id="f-password" type="password"/></div><div class="form-row"><label>Rol</label><select id="f-role"><option value="admin">Administrador</option><option value="user">Usuario</option></select></div><div class="form-actions"><button id="do-login" class="btn btn-primary">Entrar</button></div>`;
+    // Removed role selection from login form: role will be taken from the JWT returned by the API
+    body.innerHTML = `<h2>Iniciar sesión</h2><div class="form-row"><label>Usuario</label><input id="f-username"/></div><div class="form-row"><label>Contraseña</label><input id="f-password" type="password"/></div><div class="form-actions"><button id="do-login" class="btn btn-primary">Entrar</button></div>`;
     const doLogin = document.getElementById('do-login');
     if (doLogin) doLogin.addEventListener('click', async () => {
       const u = document.getElementById('f-username').value;
@@ -216,8 +217,14 @@ function bindGlobal() {
   if (btnList) btnList.addEventListener('click', async () => { await refreshList(); });
   const btnSearch = document.getElementById('btn-search');
   if (btnSearch) btnSearch.addEventListener('click', async () => {
-    const id = parseInt(document.getElementById('input-book-id').value);
-    if (!id) { showMessage('Ingrese un ID válido'); return; }
+    const raw = document.getElementById('input-book-id').value.trim();
+    // Si el usuario deja el campo vacío, listamos todos los libros (funciona para usuarios no-admin también)
+    if (raw === '') {
+      await refreshList();
+      return;
+    }
+    const id = parseInt(raw);
+    if (!id) { showMessage('Ingrese un ID válido o deje vacío para listar todos'); return; }
     try {
       const b = await getBookById(id);
       renderBook(b);

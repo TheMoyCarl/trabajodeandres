@@ -13,7 +13,8 @@ function renderAuthTabs(tab) {
   const body = document.getElementById('auth-body');
   if (!body) return;
   if (tab === 'login') {
-    body.innerHTML = `<h2>Iniciar sesión</h2><div class='form-row'><label>Usuario</label><input id='f-username'/></div><div class='form-row'><label>Contraseña</label><input id='f-password' type='password'/></div><div class='form-row'><label>Rol</label><select id='f-role'><option value='admin'>Administrador</option><option value='user'>Usuario</option></select></div><div class='form-actions'><button id='do-login' class='btn btn-primary'>Entrar</button></div>`;
+    // Removed role selection from login form: role will be read from the JWT returned by the backend
+    body.innerHTML = `<h2>Iniciar sesión</h2><div class='form-row'><label>Usuario</label><input id='f-username'/></div><div class='form-row'><label>Contraseña</label><input id='f-password' type='password'/></div><div class='form-actions'><button id='do-login' class='btn btn-primary'>Entrar</button></div>`;
     const doLogin = document.getElementById('do-login');
     if (doLogin) doLogin.addEventListener('click', async () => {
       const u = document.getElementById('f-username').value;
